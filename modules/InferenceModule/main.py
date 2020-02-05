@@ -67,7 +67,8 @@ timestring = ts.strftime("%Y-%m-%d %H:%M:%S")
 current_date = timestring.split()[0]
 DAILY_STRING = "timestamp,location," + labels_string + "\n"
 if (CLOUD_STORAGE):
-	block_blob_service = BlockBlobService(connection_string='DefaultEndpointsProtocol=http;BlobEndpoint=http://azureblobstorageoniotedge:11002/<local storage container name>;AccountName=<local storage container name>;AccountKey=<local storage container key>')
+	# block_blob_service = BlockBlobService(connection_string='DefaultEndpointsProtocol=http;BlobEndpoint=http://azureblobstorageoniotedge:11002/mtcsiotedgedata;AccountName=mtcsiotedgedata;AccountKey=VYRH01NHk4afJiVMZ8w2QRT+airxb88zQMqBt10rqBeUdcoKsxUxoUaVX8L0UApgX9wBUUJGbyEph98xZAGdsQ==')
+	block_blob_service = BlockBlobService(account_name='mtcsiotedgedata', account_key='VYRH01NHk4afJiVMZ8w2QRT+airxb88zQMqBt10rqBeUdcoKsxUxoUaVX8L0UApgX9wBUUJGbyEph98xZAGdsQ==')
 	ts = datetime.now(TIME_ZONE)
 	DAILY_CSV_NAME = 'objectcount' + current_date + '.csv'
 	block_blob_service.create_container(CONTAINER_NAME)
@@ -103,7 +104,7 @@ def send_confirmation_callback(message, result, user_context):
 	"""
 	Callback received when the message that we're forwarding is processed.
 	"""
-	print("Confirmation[%d] received for message with result = %s" % (user_context, result))
+	# print("Confirmation[%d] received for message with result = %s" % (user_context, result))
 
 print("trying to make IOT Hub manager")
 hub_manager = None
@@ -112,7 +113,7 @@ hub_manager = None
 start_time = time.time()
 timeout = time.time() + 60*2
 while time.time() < timeout:
-	time.sleep(1)
+	time.sleep(10)
 	try:
 		hub_manager = HubManager(PROTOCOL)
 		break
@@ -183,7 +184,7 @@ def frame_handler():
 			block_blob_service.create_blob_from_text(container_name = CONTAINER_NAME, blob_name= LATEST_CSV_NAME, text = "timestamp,location," + labels_string + "\n" + LATEST_STRING, encoding = 'utf-8')
 			print("SUCCESSFULLY STORED", file=sys.stderr)				
 				
-		print("PROCESSED",len(cameras),"IN",time.time()-start_time,"s")
+		# print("PROCESSED",len(cameras),"IN",time.time()-start_time,"s")
 		output_IOT = IoTHubMessage(outputstring)
 		hub_manager.forward_event_to_output("inferenceoutput", output_IOT, 0)
 		print(outputstring, file=sys.stderr)

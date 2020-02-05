@@ -26,7 +26,7 @@ url = 'http://inferencemodule:5000'
 TIME_ZONE = timezone('US/Pacific')
 
 # Set delay so you don't have too many messages (in seconds)
-DELAY = 0.0
+DELAY = 2.0
 
 def camera_capture():
 	"""
@@ -49,7 +49,7 @@ def camera_capture():
 			cap = cv2.VideoCapture(int(i))	
 		except Exception:
 			cap = cv2.VideoCapture(i)
-		cap.set(38, 2)
+		# cap.set(38, 2)
 		caps.append(cap)
 
 	try:

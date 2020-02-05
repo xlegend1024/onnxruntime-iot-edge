@@ -1,0 +1,116 @@
+{
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": "",
+            "registryCredentials": {
+              "container": {
+                "username": "mtcsacr",
+                "password": "HoMW=mqA9/D=6AAkw6yUCtm701ANinNG",
+                "address": "mtcsacr.azurecr.io"
+              }
+            }
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "type": "docker",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.0",
+              "createOptions": "{}"
+            }
+          },
+          "edgeHub": {
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.0",
+              "createOptions": "{\"HostConfig\":{\"Binds\":[],\"NetworkMode\":\"Host\",\"Devices\":[]}}"
+            }
+          }
+        },
+        "modules": {
+          "inferencemodule": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mtcsacr.azurecr.io/inferencemodule:adaptiveobjectcountstable-1.0.11-arm64",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{},\"Binds\":[\"/usr/lib/aarch64-linux-gnu/:/usr/lib/aarch64-linux-gnu-override/\",\"/usr/lib/aarch64-linux-gnu/tegra:/usr/lib/aarch64-linux-gnu-override/tegra\",\"/usr/local/cuda:/usr/local/cuda\",\"/usr/local/cuda-10.0:/usr/local/cuda-10.0\",\"/dev:/dev\"],\"NetworkMode\":\"Host\",\"Devices\":[{\"PathOnHost\":\"/dev/nvhost-ctrl\",\"PathInContainer\":\"/dev/nvhost-ctrl\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvhost-ctrl-gpu\",\"PathInContainer\":\"/dev/nvhost-ctrl-gpu\",\"CgroupPermissions\":\"rwm\"},{",
+              "createOptions01": "\"PathOnHost\":\"/dev/nvhost-vic\",\"PathInContainer\":\"/dev/nvhost-vic\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvhost-prof-gpu\",\"PathInContainer\":\"/dev/nvhost-prof-gpu\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvmap\",\"PathnContainer\":\"/dev/nvmap\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvhost-gpu\",\"PathInContainer\":\"/dev/nvhost-gpu\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvhost-as-gpu\",\"PathInContainer\":\"/dev/nvhost-as-gpu\",\"CgroupPermissions\":\"rwm\"}]}}"
+            }
+          },
+          "PostProcessingModule": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mtcsacr.azurecr.io/postprocessingmodule:0.1.9-arm64",
+              "createOptions": "{}"
+            }
+          },
+          "CameraCaptureModule": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mtcsacr.azurecr.io/cameracapturemodule:camerathreadedcapturestable-1.0.11-arm64",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{},\"Binds\":[],\"NetworkMode\":\"Host\",\"Devices\":[{\"PathOnHost\":\"/dev/video0\",\"PathInContainer\":\"/dev/video0\",\"CgroupPermissions\":\"rwm\"}]}}"
+            }
+          },
+          "azureblobstorageoniotedge": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azure-blob-storage:latest",
+              "createOptions": "{\"Env\":[\"storagetest=mtcsiotedgedata\",\"oRKU0wWN3+OCPj0HH7g+S3SvoIxHEH3xOc/2isjPD1fyuZQDJocZCm640ajTFUFCTcRlvEveoN024mOZ/NtduQ===VYRH01NHk4afJiVMZ8w2QRT+airxb88zQMqBt10rqBeUdcoKsxUxoUaVX8L0UApgX9wBUUJGbyEph98xZAGdsQ==\"],\"HostConfig\":{\"NetworkMode\":\"Host\",\"Binds\":[],\"PortBindings\":{}}}"
+            }
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "routes": {
+          "InferenceModuleToPostModule": "FROM /messages/modules/InferenceModule/outputs/* INTO BrokeredEndpoint(\"/modules/PostProcessingModule/inputs/postprocessinginput\")",
+          "PostModuleToIoTHub": "FROM /messages/modules/PostProcessingModule/outputs/* INTO $upstream"
+        },
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    },
+    "azureblobstorageoniotedge": {
+      "properties.desired": {
+        "deviceAutoDeleteProperties": {
+          "deleteOn": "false",
+          "deleteAfterMinutes": "10",
+          "retainWhileUploading": "true"
+        },
+        "deviceToCloudUploadProperties": {
+          "uploadOn": "true",
+          "uploadOrder": "OldestFirst",
+          "cloudStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=mtcsiotedgedata;AccountKey=VYRH01NHk4afJiVMZ8w2QRT+airxb88zQMqBt10rqBeUdcoKsxUxoUaVX8L0UApgX9wBUUJGbyEph98xZAGdsQ==;EndpointSuffix=core.windows.net",
+          "storageContainersForUpload": {
+            "localcontainer": {
+              "target": "storagetest"
+            }
+          },
+          "deleteAfterUpload": "true"
+        }
+      }
+    }
+  }
+}

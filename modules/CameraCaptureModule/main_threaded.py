@@ -26,6 +26,8 @@ url = 'http://inferencemodule:5000'
 # Set timezone for timestamping (Change if you are not in Pacific timezone)
 TIME_ZONE = timezone('US/Pacific')
 
+# Set delay so you don't have too many messages (in seconds)
+DELAY = 2.0
 
 # Camera class wraps around VideoCApture and allows us to thread cameras for parallel processing
 # and streamlining the buffer
@@ -35,10 +37,16 @@ class Camera:
 		self.index = idx
 		try:
 			self.cap = cv2.VideoCapture(int(self.index))
-			self.cap.set(38, 2)
+			if not self.cap.isOpened():
+				print("Camera is in use Line 41")
+
+			# self.cap.set(38, 2)
 		except Exception:
 			self.cap = cv2.VideoCapture(self.index)
-			self.cap.set(38, 2)
+			if not self.cap.isOpened():
+				print("Camera is in use Line 47")
+
+			# self.cap.set(38, 2)
 		
 		self._camera_thread = threading.Thread(target=self.run_camera)
 		self._camera_thread.start()
@@ -46,7 +54,7 @@ class Camera:
 	def run_camera(self):
 		while (True):
 			self.ret, self.frame = self.cap.read()
-			cv2.waitKey(5)
+			cv2.waitKey(100)
 			_, enc = cv2.imencode('.jpg', self.frame)
 			self.enc = enc.flatten().tolist()
 
@@ -78,14 +86,14 @@ def camera_capture():
 	caps = [Camera(i) for i in cameras]
 
 	#GIVE TIME FOR THREADS TO START (CRITICAL)
-	time.sleep(5)
+	time.sleep(10)
 
 	try:
 		start_time = time.time()
 		while (True):
 			cv2.waitKey(5)
 			output = {'cameras' : ','.join(cameras), 'locations' : ','.join(locations)}
-			if (time.time() - start_time) > 0.0:
+			if (time.time() - start_time) > DELAY:
 				start_time = time.time()
 				total_perf_time = time.time()
 				
@@ -106,8 +114,9 @@ def camera_capture():
 				try: 
 					headers = {'Content-Type': 'application/json'}
 					response = requests.post(url, headers=headers, data=json.dumps(output))
-					print(response.text)
-					print("PERF TIME FOR", len(cameras),"IS", (time.time()-total_perf_time), "s")
+					# print(json.dumps(output))
+					# print(response.text)
+					# print("PERF TIME FOR", len(cameras),"IS", (time.time()-total_perf_time), "s")
 
 				except Exception as e:
 					print('EXCEPTION:', str(e))
