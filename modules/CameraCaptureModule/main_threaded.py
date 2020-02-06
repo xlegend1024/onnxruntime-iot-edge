@@ -40,13 +40,13 @@ class Camera:
 			if not self.cap.isOpened():
 				print("Camera is in use Line 41")
 
-			self.cap.set(38, 2)
+			# self.cap.set(38, 2)
 		except Exception:
 			self.cap = cv2.VideoCapture(self.index)
 			if not self.cap.isOpened():
 				print("Camera is in use Line 47")
 
-			self.cap.set(38, 2)
+			# self.cap.set(38, 2)
 		
 		self._camera_thread = threading.Thread(target=self.run_camera)
 		self._camera_thread.start()
@@ -55,8 +55,13 @@ class Camera:
 		while (True):
 			self.ret, self.frame = self.cap.read()
 			cv2.waitKey(100)
-			_, enc = cv2.imencode('.jpg', self.frame)		
-			# cv2.imwrite("/home/storagedata/captured.jpg", self.frame)
+			_, enc = cv2.imencode('.jpg', self.frame)
+			# # Save image 
+			# ts = datetime.now(TIME_ZONE)
+			# timestring = ts.strftime("%Y-%m-%d %H:%M:%S")
+			# current_time = timestring.split()[1]
+			# image_time_name = '/home/storagedata/captured' + current_time + '.jpg'		
+			# cv2.imwrite(image_time_name, self.frame)
 			self.enc = enc.flatten().tolist()
 
 	def get_frame(self):

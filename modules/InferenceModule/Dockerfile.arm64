@@ -20,6 +20,7 @@ RUN pip3 install azure-storage && \
 EXPOSE 5000
 
 COPY TinyYOLO.onnx .
+# COPY yolov3-tiny.onnx .
 COPY inference.py .
 COPY main.py .
 COPY labels.txt .

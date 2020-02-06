@@ -45,6 +45,7 @@ for i, val in enumerate(labels):
 print("loading Tiny YOLO...")
 start_time = time.time()
 sess = rt.InferenceSession('TinyYOLO.onnx')
+# sess = rt.InferenceSession('yolov3-tiny.onnx')
 print("loaded after", time.time()-start_time,"s")
 
 # Path to CSV FILE (edit if you want)

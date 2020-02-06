@@ -20,7 +20,6 @@ def run_onnx(frame, location, timestamp, sess):
 
 	start_time = time.time()
 	pred = sess.run(None, {input_name: frame})
-	print (pred)
 	pred = np.array(pred[0][0])
 	print("INFERENCE TIME (PURE ONNXRUNTIME)", (time.time()-start_time)*1000,"ms")
 	
