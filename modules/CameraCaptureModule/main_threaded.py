@@ -40,13 +40,13 @@ class Camera:
 			if not self.cap.isOpened():
 				print("Camera is in use Line 41")
 
-			# self.cap.set(38, 2)
+			self.cap.set(38, 2)
 		except Exception:
 			self.cap = cv2.VideoCapture(self.index)
 			if not self.cap.isOpened():
 				print("Camera is in use Line 47")
 
-			# self.cap.set(38, 2)
+			self.cap.set(38, 2)
 		
 		self._camera_thread = threading.Thread(target=self.run_camera)
 		self._camera_thread.start()
@@ -55,7 +55,8 @@ class Camera:
 		while (True):
 			self.ret, self.frame = self.cap.read()
 			cv2.waitKey(100)
-			_, enc = cv2.imencode('.jpg', self.frame)
+			_, enc = cv2.imencode('.jpg', self.frame)		
+			# cv2.imwrite("/home/storagedata/captured.jpg", self.frame)
 			self.enc = enc.flatten().tolist()
 
 	def get_frame(self):
@@ -115,8 +116,8 @@ def camera_capture():
 					headers = {'Content-Type': 'application/json'}
 					response = requests.post(url, headers=headers, data=json.dumps(output))
 					# print(json.dumps(output))
-					# print(response.text)
-					# print("PERF TIME FOR", len(cameras),"IS", (time.time()-total_perf_time), "s")
+					print(response.text)
+					print("PERF TIME FOR", len(cameras),"IS", (time.time()-total_perf_time), "s")
 
 				except Exception as e:
 					print('EXCEPTION:', str(e))

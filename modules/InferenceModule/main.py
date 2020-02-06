@@ -184,7 +184,7 @@ def frame_handler():
 			block_blob_service.create_blob_from_text(container_name = CONTAINER_NAME, blob_name= LATEST_CSV_NAME, text = "timestamp,location," + labels_string + "\n" + LATEST_STRING, encoding = 'utf-8')
 			print("SUCCESSFULLY STORED", file=sys.stderr)				
 				
-		# print("PROCESSED",len(cameras),"IN",time.time()-start_time,"s")
+		print("PROCESSED",len(cameras),"IN",time.time()-start_time,"s")
 		output_IOT = IoTHubMessage(outputstring)
 		hub_manager.forward_event_to_output("inferenceoutput", output_IOT, 0)
 		print(outputstring, file=sys.stderr)

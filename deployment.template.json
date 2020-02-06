@@ -124,13 +124,13 @@
               "createOptions": {
                 "HostConfig": {
                   "PortBindings": {},
-                  "Binds": [
+                  "Binds": ["/home/storagedata:/home/storagedata"
                   ],
                   "NetworkMode": "Host",
                   "Devices": [
                     {
-                      "PathOnHost": "/dev/video0",
-                      "PathInContainer": "/dev/video0",
+                      "PathOnHost": "/dev/video1",
+                      "PathInContainer": "/dev/video1",
                       "CgroupPermissions": "rwm"
                     }
                   ]

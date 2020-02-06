@@ -21,7 +21,7 @@ def run_onnx(frame, location, timestamp, sess):
 	start_time = time.time()
 	pred = sess.run(None, {input_name: frame})
 	pred = np.array(pred[0][0])
-	# print("INFERENCE TIME (PURE ONNXRUNTIME)", (time.time()-start_time)*1000,"ms")
+	print("INFERENCE TIME (PURE ONNXRUNTIME)", (time.time()-start_time)*1000,"ms")
 	
 	labels_file = open("labels.txt")
 	labels = labels_file.read().split(",")
@@ -66,6 +66,6 @@ def run_onnx(frame, location, timestamp, sess):
 					outputstring += " "+ labels[class_detected] + " confidence " + str(display_confidence)
 					output.append([labels[class_detected], display_confidence])
 	outputstring = location + " Results @"+ timestamp + " " + outputstring
-	# print("POST PROCESSING TIME", (time.time() - post_start_time)*1000,"ms")
-	# print("TOTAL INFERENCE TIME", (time.time() - start_time)*1000,"ms")
+	print("POST PROCESSING TIME", (time.time() - post_start_time)*1000,"ms")
+	print("TOTAL INFERENCE TIME", (time.time() - start_time)*1000,"ms")
 	return output, outputstring

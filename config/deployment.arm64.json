@@ -42,7 +42,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mtcsacr.azurecr.io/inferencemodule:adaptiveobjectcountstable-1.0.11-arm64",
+              "image": "mtcsacr.azurecr.io/inferencemodule:adaptiveobjectcountstable-1.0.13-arm64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{},\"Binds\":[\"/usr/lib/aarch64-linux-gnu/:/usr/lib/aarch64-linux-gnu-override/\",\"/usr/lib/aarch64-linux-gnu/tegra:/usr/lib/aarch64-linux-gnu-override/tegra\",\"/usr/local/cuda:/usr/local/cuda\",\"/usr/local/cuda-10.0:/usr/local/cuda-10.0\",\"/dev:/dev\"],\"NetworkMode\":\"Host\",\"Devices\":[{\"PathOnHost\":\"/dev/nvhost-ctrl\",\"PathInContainer\":\"/dev/nvhost-ctrl\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvhost-ctrl-gpu\",\"PathInContainer\":\"/dev/nvhost-ctrl-gpu\",\"CgroupPermissions\":\"rwm\"},{",
               "createOptions01": "\"PathOnHost\":\"/dev/nvhost-vic\",\"PathInContainer\":\"/dev/nvhost-vic\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvhost-prof-gpu\",\"PathInContainer\":\"/dev/nvhost-prof-gpu\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvmap\",\"PathnContainer\":\"/dev/nvmap\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvhost-gpu\",\"PathInContainer\":\"/dev/nvhost-gpu\",\"CgroupPermissions\":\"rwm\"},{\"PathOnHost\":\"/dev/nvhost-as-gpu\",\"PathInContainer\":\"/dev/nvhost-as-gpu\",\"CgroupPermissions\":\"rwm\"}]}}"
             }
@@ -63,8 +63,8 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mtcsacr.azurecr.io/cameracapturemodule:camerathreadedcapturestable-1.0.11-arm64",
-              "createOptions": "{\"HostConfig\":{\"PortBindings\":{},\"Binds\":[],\"NetworkMode\":\"Host\",\"Devices\":[{\"PathOnHost\":\"/dev/video0\",\"PathInContainer\":\"/dev/video0\",\"CgroupPermissions\":\"rwm\"}]}}"
+              "image": "mtcsacr.azurecr.io/cameracapturemodule:camerathreadedcapturestable-1.0.14-arm64",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{},\"Binds\":[\"/home/storagedata:/home/storagedata\"],\"NetworkMode\":\"Host\",\"Devices\":[{\"PathOnHost\":\"/dev/video1\",\"PathInContainer\":\"/dev/video1\",\"CgroupPermissions\":\"rwm\"}]}}"
             }
           },
           "azureblobstorageoniotedge": {
