@@ -23,9 +23,15 @@ def run_onnx(frame, location, timestamp, sess):
 	pred = np.array(pred[0][0])
 	print("INFERENCE TIME (PURE ONNXRUNTIME)", (time.time()-start_time)*1000,"ms")
 	
+	# YOLO 
 	labels_file = open("labels.txt")
 	labels = labels_file.read().split(",")
-
+	# YOLO 
+	
+	# # # YOLOv3
+	# labels_file = open("coco_classes.txt")
+	# labels = labels_file.read().split('\n')
+	# # # YOLOv3
 	outputstring = "" #FOR SENDING RESPONSE
 	output = [timestamp, location] #FOR SAVING IN CSV
 
@@ -34,9 +40,12 @@ def run_onnx(frame, location, timestamp, sess):
 	tiny_yolo_cell_width = 13
 	tiny_yolo_cell_height = 13
 	num_boxes = 5
+	# YOLO
 	tiny_yolo_classes = 20
+	# # YOLOv3
+	# tiny_yolo_classes = 80
 
-	CONFIDENCE_THRESHOLD = 0.33
+	CONFIDENCE_THRESHOLD = 0.50
 
 	# Goes through each of the 'cells' in tiny_yolo. Each cell is responsible for detecting 5 objects
 	for bx in range (0, tiny_yolo_cell_width):

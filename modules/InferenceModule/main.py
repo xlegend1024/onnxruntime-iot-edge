@@ -32,7 +32,8 @@ from datetime import datetime
 from pytz import timezone  
 import time 
 
-# Get Labels 
+# YOLO
+# Get Labels for Tiny YOLO
 labels_file = open("labels.txt")
 labels_string = labels_file.read()
 labels = labels_string.split(",")
@@ -44,9 +45,27 @@ for i, val in enumerate(labels):
 # Loading ONNX model
 print("loading Tiny YOLO...")
 start_time = time.time()
-sess = rt.InferenceSession('TinyYOLO.onnx')
-# sess = rt.InferenceSession('yolov3-tiny.onnx')
+sess = rt.InferenceSession('Model.onnx')
 print("loaded after", time.time()-start_time,"s")
+# YOLO
+
+# # # YOLOv3
+# # Get Labels for Tiny YOLO v3
+# labels_file = open("coco_classes.txt")
+# labels_string = labels_file.read()
+# labels = labels_string.split('\n')
+# labels_file.close()
+# label_lookup = {}
+# for i, val in enumerate(labels):
+# 	label_lookup[val] = i
+
+
+# # Loading ONNX model
+# print("loading Tiny YOLO v3")
+# start_time = time.time()
+# sess = rt.InferenceSession('yolov3-tiny.onnx')
+# print("loaded after", time.time()-start_time,"s")
+# # # YOLOv3
 
 # Path to CSV FILE (edit if you want)
 LATEST_FULL_PATH = '/home/storagedata/objectcountlatest.csv'
